@@ -1,0 +1,115 @@
+<div class="detail-container">
+
+  <!-- ស្ថានភាពកំពុងទាញយកទិន្នន័យ (Loading State) -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>កំពុងទាញយកទិន្នន័យ...</p>
+    </div>
+  }
+
+  <!-- ស្ថានភាពមានបញ្ហា (Error State) -->
+  @else if (errorMessage) {
+    <div class="error-state">
+      <p>{{ errorMessage }}</p>
+      <button routerLink="/student-list" class="btn-back">ត្រឡប់ទៅបញ្ជីសិស្ស</button>
+    </div>
+  }
+
+  <!-- ស្ថានភាពទាញយកទិន្នន័យបានសម្រេច (Success State) -->
+  @else if (studentDetailData) {
+
+    <!-- ប៊ូតុងត្រឡប់ក្រោយ -->
+    <button routerLink="/student-list" class="btn-back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ត្រឡប់ក្រោយ
+    </button>
+
+    <!-- កាតព័ត៌មានសិស្ស -->
+    <div class="detail-card">
+
+      <!-- ផ្នែកក្បាល (រូបភាព និង ឈ្មោះ) -->
+      <div class="detail-header">
+        <div class="avatar-wrapper">
+          @if (studentDetailData.photo) {
+            <img [src]="'http://assignment2api.sorngsiyou.com/storage/' + studentDetailData.photo" alt="Student Photo" class="student-avatar">
+          } @else {
+            <div class="student-avatar-placeholder">
+              {{ studentDetailData.full_name ? (studentDetailData.full_name | slice:0:1) : 'S' }}
+            </div>
+          }
+        </div>
+        <div class="header-info">
+          <h2>{{ studentDetailData.full_name || 'មិនមានឈ្មោះ' }}</h2>
+          <span class="department-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            {{ studentDetailData.department || 'មិនកំណត់' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- ផ្នែកខ្លួន (ព័ត៌មានលម្អិត) -->
+      <div class="detail-grid">
+
+        <!-- អ៊ីមែល -->
+        <div class="detail-item">
+          <div class="icon-box email-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="detail-content">
+            <label>អ៊ីមែល</label>
+            <span>{{ studentDetailData.email || 'មិនមាន' }}</span>
+          </div>
+        </div>
+
+        <!-- ទូរស័ព្ទ -->
+        <div class="detail-item">
+          <div class="icon-box phone-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="detail-content">
+            <label>ទូរស័ព្ទ</label>
+            <span>{{ studentDetailData.phone || 'មិនមាន' }}</span>
+          </div>
+        </div>
+
+        <!-- ថ្ងៃខែឆ្នាំកំណើត -->
+        <div class="detail-item">
+          <div class="icon-box dob-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="detail-content">
+            <label>ថ្ងៃខែឆ្នាំកំណើត</label>
+            <span>{{ studentDetailData.date_of_birth || 'មិនមាន' }}</span>
+          </div>
+        </div>
+
+        <!-- ស្ថានភាព -->
+        <div class="detail-item">
+          <div class="icon-box status-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="detail-content">
+            <label>ស្ថានភាព</label>
+            <span>
+              <span class="status-badge" [class.status-active]="studentDetailData.status === 'Active'" [class.status-inactive]="studentDetailData.status !== 'Active'">
+                {{ studentDetailData.status || 'Active' }}
+              </span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ផ្នែកប៊ូតុង Action -->
+      <div class="detail-actions">
+        <button [routerLink]="['/updatastudent', studentDetailData.id]" class="btn-edit-detail">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          កែប្រែព័ត៌មាន
+        </button>
+      </div>
+
+    </div>
+  }
+
+</div>

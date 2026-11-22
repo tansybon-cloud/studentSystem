@@ -1,0 +1,79 @@
+<div class="form-container">
+    <h2>UPDATE STUDENT</h2>
+
+    <form (ngSubmit)="updateNewStudentData()">
+        <!-- Full Name -->
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" [(ngModel)]="studentData.full_name" name="full_name" placeholder="Enter full name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="studentData.email" name="email" placeholder="Enter email address" required>
+        </div>
+
+        <!-- Department -->
+        <div class="form-group">
+            <label>Department</label>
+            <select [(ngModel)]="studentData.department" name="department" required>
+                <option value="">Select department</option>
+                <option value="IT">IT</option>
+                <option value="Network">Network</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Software Engineering">Software Engineering</option>
+            </select>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" [(ngModel)]="studentData.date_of_birth" name="date_of_birth" required>
+        </div>
+
+        <!-- Photo (Enhanced UI) -->
+        <div class="form-group">
+            <label>Photo</label>
+            <div class="photo-upload-box">
+                @if (currentPhoto && !selectedFile) {
+                    <img [src]="'http://assignment2api.sorngsiyou.com/storage/' + currentPhoto" class="current-photo-preview" alt="Current Photo">
+                }
+                @if (selectedFile) {
+                    <span class="file-name">📄 {{ selectedFile.name }}</span>
+                }
+                <label class="file-upload-btn">
+                    <span>📁 Choose File</span>
+                    <input type="file" (change)="onFileSelected($event)" hidden>
+                </label>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+            <label>Status</label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="Active" [(ngModel)]="studentData.status" name="status"> Active
+                </label>
+                <label>
+                    <input type="radio" value="Inactive" [(ngModel)]="studentData.status" name="status"> Inactive
+                </label>
+            </div>
+        </div>
+
+        <!-- Actions Buttons -->
+        <div class="form-actions">
+            <button type="button" routerLink="/student-list" class="btn-cancel">Cancel</button>
+            <button type="submit" class="btn-update">Update Student</button>
+        </div>
+    </form>
+
+    <!-- Success Message Notification -->
+    @if (successMessage) {
+        <div class="alert-success">
+            <span>✅</span> {{ successMessage }}
+        </div>
+    }
+</div>
